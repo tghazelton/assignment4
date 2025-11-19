@@ -1,12 +1,12 @@
 # Base image
 FROM fedora:latest
 
-# Update system and install required tools: tuxpaint, vim, httpd
-RUN dnf -y update && \
+# Upgrade the system and install tuxpaint, vim, and httpd
+RUN dnf -y upgrade && \
     dnf -y install tuxpaint vim httpd && \
     dnf clean all
 
-# Copy local myinfo.html into the container
+# Copy local myinfo.html into the web root
 COPY myinfo.html /var/www/html/myinfo.html
 
 # Expose HTTP port
