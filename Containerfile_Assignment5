@@ -1,14 +1,16 @@
-    # Base image
-    FROM fedora:latest
+# Base image (use the same base image you used in Assignment 4 if different)
+FROM ubuntu:22.04
 
-    # Upgrade the system and install tuxpaint, vim, and httpd
-    RUN apt-get update && apt-get install -y apache2 php curl
+# Update package index and install required packages (without tuxpaint or vim)
+RUN apt-get update && \
+    apt-get install -y apache2 curl wget && \
+    rm -rf /var/lib/apt/lists/*
 
-    # Copy local myinfo.html into the web root
-    COPY data /var/www/html/data
+# Copy the local data folder (which contains myinfo.html) into the web root
+COPY data /var/www/html/data
 
-    # Expose HTTP port
-    EXPOSE 80
+# Expose HTTP port
+EXPOSE 80
 
-    # Run httpd in the foreground when the container starts
-    CMD ["httpd", "-D", "FOREGROUND"]
+# Run Apache in the foreground when the container starts
+CMD ["apache2ctl", "-D", "FOREGROUND"]
