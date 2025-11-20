@@ -1,13 +1,11 @@
 # Base image
 FROM fedora:latest
 
-# Upgrade the system and install -y apache2 curl wget
-RUN dnf -y upgrade && \
-    dnf -y install apt-get install -y apache2 curl wget \
-    dnf clean all
+# Upgrade the system and install apache2 and httpd
+RUN apt-get update && apt-get install -y apache2 curl wget
 
-# Copy local myinfo.html into the web root
-COPY myinfo.html /var/www/html/myinfo.html
+# Copy local data into the web root
+COPY data /var/www/html/data
 
 # Expose HTTP port
 EXPOSE 80
