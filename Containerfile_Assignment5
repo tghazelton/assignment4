@@ -1,14 +1,14 @@
-# Base image
-FROM fedora:latest
+    # Base image
+    FROM fedora:latest
 
-# Upgrade the system and install apache2 and httpd
-RUN apt-get update && apt-get install -y apache2 curl wget
+    # Upgrade the system and install tuxpaint, vim, and httpd
+    RUN apt-get update && apt-get install -y apache2 php curl
 
-# Copy local data into the web root
-COPY data /var/www/html/data
+    # Copy local myinfo.html into the web root
+    COPY data /var/www/html/data
 
-# Expose HTTP port
-EXPOSE 80
+    # Expose HTTP port
+    EXPOSE 80
 
-# Run httpd in the foreground when the container starts
-CMD ["httpd", "-D", "FOREGROUND"]
+    # Run httpd in the foreground when the container starts
+    CMD ["httpd", "-D", "FOREGROUND"]
