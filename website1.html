@@ -1,0 +1,28 @@
+assignment 6 website 1
+# ---------- Base stage with common setup ----------
+FROM fedora:latest AS base
+
+# Install httpd
+RUN dnf install -y httpd && dnf clean all
+
+# Add a ServerName to prevent Apache warning
+RUN echo "ServerName localhost" >> /etc/httpd/conf/httpd.conf
+
+# Set working directory to Apache's web root
+WORKDIR /var/www/html
+
+# Expose HTTP port
+EXPOSE 80
+
+# Default command to run httpd in the foreground
+CMD ["httpd", "-D", "FOREGROUND"]
+
+
+# ---------- First website image (website=1) ----------
+FROM base AS website1
+
+# Label this image
+LABEL website="1"
+
+# Copy website1.html into the web root as index.html
+COPY website1.html /var/www/html/index.html
