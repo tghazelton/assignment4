@@ -1,0 +1,32 @@
+# -------- Base stage with all technical requirements --------
+FROM registry.fedoraproject.org/fedora:latest AS base
+
+# Install httpd (Apache), update packages, and clean cache
+RUN dnf -y update && \
+    dnf -y install httpd && \
+    dnf clean all
+
+# Expose HTTP port
+EXPOSE 80
+
+# Run httpd in the foreground (required in containers)
+ENTRYPOINT ["/usr/sbin/httpd", "-DFOREGROUND"]
+
+# -------- First image: website 1 --------
+FROM base AS website1
+
+# Copy website1.html into the default web root
+# and name it index.html so it's served at "/"
+COPY website1.html /var/www/html/index.html
+
+# Label this image as website=1
+LABEL website="1"
+
+# -------- Second image: website 2 --------
+FROM base AS website2
+
+# Copy website2.html into the default web root
+COPY website2.html /var/www/html/index.html
+
+# Label this image as website=2
+LABEL website="2"
