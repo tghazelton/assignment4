@@ -1,0 +1,16 @@
+# Base image (use the same base image you used in Assignment 4 if different)
+FROM fedora:latest
+
+# Update package index and install required packages (Fedora uses dnf + httpd)
+RUN dnf -y update && \
+    dnf -y install httpd curl wget && \
+    dnf clean all
+
+# Copy the local data folder (which contains myinfo.html) into the web root
+COPY data /var/www/html/data
+
+# Expose HTTP port
+EXPOSE 80
+
+# Run Apache (httpd) in the foreground when the container starts
+CMD ["httpd", "-D", "FOREGROUND"]
